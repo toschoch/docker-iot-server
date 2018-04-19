@@ -1,0 +1,25 @@
+version: "3"
+services:
+    cratedb:
+        image: crate
+        ports:
+            - 4200:4200
+        expose:
+            - 1883
+        volumes:
+            - ./crate.yml:/crate/config/crate.yml
+            - ./data:/data/
+
+    mosquitto:
+        build: .
+        image: shock/mosquitto
+        ports:
+            - 1883:1883
+        volumes:
+            - ./mosquitto.conf:/config/mosquitto.conf
+            
+        depends_on:
+            - cratedb
+            
+        links:
+            - cratedb
