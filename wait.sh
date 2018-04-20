@@ -20,13 +20,14 @@ USAGE
 }
 
 wait_for() {
+  command="$*"
   for i in `seq $TIMEOUT` ; do
     nc -z "$HOST" "$PORT" > /dev/null 2>&1
     
     result=$?
     if [ $result -eq 0 ] ; then
-      if [ $# -gt 0 ] ; then
-        exec "$@"
+      if [ -n "$command" ] ; then
+        exec $command
       fi
       exit 0
     fi
