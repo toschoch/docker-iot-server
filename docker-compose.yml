@@ -1,25 +1,46 @@
-version: "2.0"
+version: "3.0"
 services:
-    cratedb:
-        image: crate
+
+    influxdb:
+        image: influxdb
+        name: influx-db
         ports:
-            - 4200:4200
-        expose:
-            - 1883
+          - 4286:8086
         volumes:
-            - ./crate.yml:/crate/config/crate.yml
-            - ./data:/data/
+          - /home/tobi/PycharmProjects/test:/var/lib/influxdb
+
+    chronograf:
+        image: chronograf:alpine
+        name: influx-chrono
+        ports:
+          - 4288:8888
+        depends_on:
+          - influxdb
+        links:
+          - influxdb
+        command: chronograf --influxdb-url=http://influxdb:8086
+
+    telegraf:
+        build: telegraf/.
+        name: influx-telegraf
+        depends_on:
+          - influxdb
+          - mosquitto
+        links:
+          - influxdb
+          - mosquitto
 
     mosquitto:
-        build: .
+        build: mosquitto/.
         image: shock/mosquitto
+        name: mqtt-broker
         ports:
             - 1883:1883
         volumes:
-            - ./mosquitto.conf:/config/mosquitto.conf
-            
+            - ./mosquitto/mosquitto.conf:/config/mosquitto.conf
+
         depends_on:
-            - cratedb
-            
+            - influxdb
+
         links:
-            - cratedb
+            - influxdb

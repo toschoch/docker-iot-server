@@ -2,6 +2,7 @@
 # Crate Configuration
 network.host: _local_,_site_
 ingestion.mqtt.enabled: true
+bootstrap.system_call_filter: false
 
 # Paths
 path:

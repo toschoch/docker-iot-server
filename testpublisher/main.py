@@ -15,8 +15,10 @@ if __name__ == '__main__':
 
     while True:
         time.sleep(1)
-
-        payload = {"cpu_percent": psutil.cpu_percent(), "virtual_memory_percent": psutil.virtual_memory().percent}
+        t = time.time()
+        payload = {"cpu_percent": psutil.cpu_percent(),
+                   "virtual_memory_percent": psutil.virtual_memory().percent,
+                   "time":t}
             # .format(psutil.cpu_percent(), psutil.virtual_memory().percent)
 
         result = mqttc.publish('events/system_load', qos=1, payload=json.dumps(payload))

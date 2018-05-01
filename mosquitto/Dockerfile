@@ -11,8 +11,8 @@ EXPOSE 1883
 ENV PATH /usr/sbin:$PATH
 
 ADD mosquitto.conf /config/
-ADD wait-for-it.sh /
-RUN chmod +x /wait-for-it.sh
+#ADD ../wait-for-it.sh /
+#RUN chmod +x /wait-for-it.sh
 ADD script.sh /
 RUN chmod +x /script.sh
 

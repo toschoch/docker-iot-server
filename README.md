@@ -1,2 +1,2 @@
 # docker-iot-server
-Combines an MQTT Broker with a CrateDB for message storage
+Combines an MQTT Broker with a InfluxDB for message storage
