@@ -1,44 +1,63 @@
-version: "3.0"
-services:
+version: '3'
 
+services:
     influxdb:
         image: influxdb
-#        name: influx-db
+        networks:
+          - net
         ports:
           - 4286:8086
-#        volumes:
-#          - ./data:/var/lib/influxdb
+        volumes:
+          - data:/var/lib/influxdb
+        deploy:
+          placement:
+            constraints:
+              - node.role == manager
 
-    chronograf:
+    ui:
         image: chronograf:alpine
-#        name: influx-chrono
         ports:
           - 4288:8888
         depends_on:
           - influxdb
         links:
           - influxdb
+        networks:
+          - net
         command: chronograf --influxdb-url=http://influxdb:8086
 
     telegraf:
         build: telegraf/.
-#        name: influx-telegraf
-        depends_on:
-          - influxdb
-          - mosquitto
+        image: shocki/telegraf
+        environment:
+          - DOCKER_API_VERSION=1.35
+        volumes:
+          - /var/run/docker.sock:/var/run/docker.sock:ro
         links:
           - influxdb
           - mosquitto
+        depends_on:
+          - influxdb
+          - mosquitto
+        networks:
+          - net
 
     mosquitto:
         build: mosquitto/.
         image: shocki/mosquitto
-#        name: mqtt-broker
         ports:
             - 1883:1883
-
-        depends_on:
-            - influxdb
-
         links:
-            - influxdb
+          - influxdb
+        depends_on:
+          - influxdb
+        networks:
+          - net
+
+networks:
+  net:
+    driver: overlay
+
+volumes:
+  data:
+    driver: local
