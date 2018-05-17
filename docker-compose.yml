@@ -29,25 +29,9 @@ services:
         environment:
           - MYSQL_ROOT_PASSWORD=${MYSQL_ROOT_PASSWORD}
 
-    rsync.to:
-        image: shocki/rsync-to
-        container_name: rsync.to
-        networks:
-          - rsync
-        volumes:
-          - D:\Users\TOS\docker\volumes\data:/data
-
-    solr:
-        image: shocki/solr
-        container_name: solr
-        ports:
-          - 8983:8983
-        volumes:
-           - D:\Users\TOS\docker\volumes\data:/data
-           - D:\Users\TOS\docker\volumes\solr:/opt/solr/server/solr/mycores
-
     ui:
         image: chronograf:alpine
+        container_name: chronograf
         ports:
           - 4288:8888
         depends_on:
@@ -58,23 +42,33 @@ services:
           - net
         command: chronograf --influxdb-url=http://influxdb:8086
 
-#    telegraf:
-#        build: telegraf/.
-#        image: shocki/telegraf
-#        environment:
-#          - DOCKER_API_VERSION=1.35
+    telegraf:
+        build: telegraf/.
+        image: shocki/telegraf
+        container_name: telegraf
+        environment:
+          - DOCKER_API_VERSION=1.35
 #        volumes:
 #          - /var/run/docker.sock:/var/run/docker.sock:ro
-#        networks:
-#          - net
+        networks:
+          - net
 
     mosquitto:
         build: mosquitto/.
+        container_name: mosquitto
         image: shocki/mosquitto
         ports:
             - 1883:1883
         networks:
           - net
+
+    facerec:
+        container_name: facerec
+        image: shocki/facerec:v0.1.1
+        ports:
+            - 8081:80
+        volumes:
+          - D:\Users\TOS\docker\volumes\facerec:/data
 
 networks:
   net:
@@ -82,7 +76,3 @@ networks:
 
   rsync:
     driver: bridge #overlay
-
-#volumes:
-#  data:
-#    driver: local
