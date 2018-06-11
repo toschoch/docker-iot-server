@@ -1,0 +1,7 @@
+
+setup process for rpi's:
+1) set hostname
+2) create ssh keys and put the private key onto rpi
+3) add the notebooks public key to auth keys in rpi
+4) encrypt root partition https://github.com/NicoHood/NicoHood.github.io/wiki/Raspberry-Pi-Encrypt-Root-Partition-Tutorial
+

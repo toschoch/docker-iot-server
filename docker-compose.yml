@@ -1,11 +1,21 @@
-version: '2'
+version: '2.0'
 
 services:
+
     influxdb:
         image: influxdb
         container_name: influxdb
+        ports:
+          - 4286:8086
         volumes:
+#          - D:\Users\TOS\docker\volumes\influxdb:/var/lib/influxdb
           - /volume1/docker/influxdb:/var/lib/influxdb
+        networks:
+          - net
+#        deploy:
+#          placement:
+#            constraints:
+#              - node.role == manager
 
     ui:
         image: chronograf:alpine
