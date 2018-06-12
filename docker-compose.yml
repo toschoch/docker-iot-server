@@ -7,7 +7,7 @@ services:
         container_name: influxdb
         ports:
           - 4286:8086
-#        volumes:
+        volumes:
 #          - D:\Users\TOS\docker\volumes\influxdb:/var/lib/influxdb
           - /volume1/docker/influxdb:/var/lib/influxdb
         networks:
