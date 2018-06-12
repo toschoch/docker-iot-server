@@ -9,7 +9,7 @@ services:
           - 4286:8086
 #        volumes:
 #          - D:\Users\TOS\docker\volumes\influxdb:/var/lib/influxdb
-#          - /volume1/docker/influxdb:/var/lib/influxdb
+          - /volume1/docker/influxdb:/var/lib/influxdb
         networks:
           - net
 #        deploy:
@@ -30,8 +30,8 @@ services:
         build: telegraf/.
         image: shocki/telegraf
         container_name: telegraf
-#        volumes:
-#          - /var/run/docker.sock:/var/run/docker.sock:ro
+        volumes:
+          - /var/run/docker.sock:/var/run/docker.sock:ro
         networks:
           - net
 
@@ -40,7 +40,7 @@ services:
         image: shocki/mosquitto
         container_name: mqtt
         volumes:
-          - D:\Users\TOS\docker\volumes\mosquitto:/credentials
+          - /volume1/docker/mosquitto:/credentials
         ports:
             - 1883:1883
         networks:
