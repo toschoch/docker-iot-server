@@ -1,0 +1,4 @@
+#!/bin/sh
+
+echo "reload the config..."
+kill -HUP $(ps | grep mosquitto | grep -v grep |head -n 1 | awk '{print $1}')
