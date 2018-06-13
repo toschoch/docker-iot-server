@@ -1,4 +1,4 @@
-version: '2.0'
+version: '3.4'
 
 services:
 
@@ -7,9 +7,9 @@ services:
         container_name: influxdb
         ports:
           - 4286:8086
-        volumes:
+#        volumes:
 #          - D:\Users\TOS\docker\volumes\influxdb:/var/lib/influxdb
-          - /volume1/docker/influxdb:/var/lib/influxdb
+#          - /volume1/docker/influxdb:/var/lib/influxdb
         networks:
           - net
 #        deploy:
@@ -32,6 +32,8 @@ services:
         container_name: telegraf
         volumes:
           - /var/run/docker.sock:/var/run/docker.sock:ro
+        secrets:
+          - telegraf_mqtt_pw
         networks:
           - net
 
@@ -39,14 +41,24 @@ services:
         build: mosquitto/.
         image: shocki/mosquitto
         container_name: mqtt
-        volumes:
-          - /volume1/docker/mosquitto:/credentials
+#        volumes:
+#          - /volume1/docker/mosquitto:/credentials
         ports:
             - 1883:1883
+        secrets:
+          - source: mqtt_passwd
+            target: passwd
+
         networks:
           - net
-
+#
 networks:
   net:
     driver:
-      bridge
+      overlay
+
+secrets:
+  mqtt_passwd:
+    external: true
+  telegraf_mqtt_pw:
+    external: true
