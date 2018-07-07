@@ -12,10 +12,6 @@ services:
           - /volume1/docker/influxdb:/var/lib/influxdb
         networks:
           - net
-#        deploy:
-#          placement:
-#            constraints:
-#              - node.role == manager
 
     ui:
         image: chronograf:alpine
@@ -27,10 +23,11 @@ services:
         command: chronograf --influxdb-url=http://influxdb:8086
 
     telegraf:
-        build: telegraf/.
+	build: telegraf/.
         image: shocki/telegraf
         container_name: telegraf
         volumes:
+          - ~/docker/secrets/telegraf:/run/secrets:ro
           - /var/run/docker.sock:/var/run/docker.sock:ro
         networks:
           - net
@@ -40,7 +37,7 @@ services:
         image: shocki/mosquitto
         container_name: mqtt
         volumes:
-          - /volume1/docker/mosquitto:/credentials
+          - ~/docker/secrets/mqtt:/run/secrets:ro
         ports:
             - 1883:1883
         networks:
