@@ -23,7 +23,7 @@ services:
         command: chronograf --influxdb-url=http://influxdb:8086
 
     telegraf:
-	build: telegraf/.
+        build: telegraf/.
         image: shocki/telegraf
         container_name: telegraf
         volumes:
