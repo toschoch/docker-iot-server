@@ -20,6 +20,8 @@ services:
           - 4288:8888
         networks:
           - net
+        volumes:
+          - /volume1/docker/chronograf:/var/lib/chronograf
         command: chronograf --influxdb-url=http://influxdb:8086
 
     telegraf:
