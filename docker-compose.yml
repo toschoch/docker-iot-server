@@ -3,7 +3,7 @@ version: '2.0'
 services:
 
     influxdb:
-        image: influxdb
+        image: influxdb:1.8.4-alpine
         container_name: influxdb
         ports:
           - 4286:8086
@@ -14,7 +14,7 @@ services:
           - net
 
     ui:
-        image: chronograf:alpine
+        image: chronograf:1.8.8-alpine
         container_name: chronograf
         ports:
           - 4288:8888
@@ -23,7 +23,6 @@ services:
         command: chronograf --influxdb-url=http://influxdb:8086
 
     telegraf:
-        build: telegraf/.
         image: shocki/telegraf
         container_name: telegraf
         volumes:
@@ -33,10 +32,10 @@ services:
           - net
 
     mosquitto:
-        build: mosquitto/.
-        image: shocki/mosquitto
+        image: eclipse-mosquitto:2.0.7
         container_name: mqtt
         volumes:
+          - ./mosquitto/mosquitto.conf:/mosquitto/config/mosquitto.conf
           - ~/docker/secrets/mqtt:/run/secrets:ro
         ports:
             - 1883:1883

@@ -1,4 +1,4 @@
-FROM telegraf:alpine
+FROM telegraf:17.3-alpine
 
 COPY telegraf.conf /
 COPY entrypoint.sh /
