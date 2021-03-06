@@ -42,6 +42,7 @@ services:
           - ~/docker/secrets/mqtt:/run/secrets:ro
         ports:
             - 1883:1883
+        command: /usr/sbin/mosquitto -c /mosquitto/config/mosquitto.conf
         networks:
           - net
 
